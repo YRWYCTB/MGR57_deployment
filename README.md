@@ -6,11 +6,13 @@ deployment MGR for mysql5.7
 
 ### 2、部署MySQL节点如下
 172.18.0.152:3317    dzst152
+
 172.18.0.151:3317    dzst151
+
 172.18.0.160:3317    dzst160
 
 ### 3、增加TPC连接用户
-create user tian identified by '8085782';
+create user tian identified by 'passwd';
 grant all on *.* to tian with grant option;
 
 ### 4、MySQL-shell
