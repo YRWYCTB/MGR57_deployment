@@ -459,3 +459,18 @@ ERROR: The target instance must be either cloned or fully provisioned before it 
 Built-in clone support is available starting with MySQL 8.0.17 and is the recommended method for provisioning instances.
 Cluster.addInstance: Instance provisioning required (MYSQLSH 51153)
 ```
+## 6 复制加速参数
+在my.cnf中配置如下参数
+```sh
+cat my.cnf
+slave_parallel_type    =LOGICAL_CLOCK
+slave_parallel_workers =4
+binlog_transaction_dependency_history_size = 25000
+binlog_transaction_dependency_tracking =WRITESET
+slave_preserve_commit_order           =1
+```
+MGR中secondary节点应用日志同样适用原复制通道，如上参数，配置基于WRITESET模式的并行复制，增加复制的worker线程：slave_parallel_workers=N 
+N为4-8，如果lastcommitted 相等即可并行回访。
+为了保证回放过程中事务提交顺序和主库一致，需要开启slave_preserve_commit_order参数。5.7.30中如果不开启该参数，可能无法启动组复制。
+日志中会有如下报错。
+[Warning] Plugin group_replication reported: 'Group Replication requires slave-preserve-commit-order to be set to ON when using more than 1 applier threads.'
