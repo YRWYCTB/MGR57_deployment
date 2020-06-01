@@ -126,6 +126,8 @@ gtid_mode                =ON
 master_info_repository  = TABLE
 relay_log_info_repository= TABLE
 transaction_write_set_extraction = XXHASH64
+# Disable other storage engines
+disabled_storage_engines="MyISAM,BLACKHOLE,FEDERATED,ARCHIVE,MEMORY"
 ```
 配置完成，再次检查配置：    "status": "ok"表示配置无误。
 ```sql
