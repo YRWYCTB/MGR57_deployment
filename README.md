@@ -491,4 +491,5 @@ group_replication_compression_threshold            = 1000000    #default 1M mess
 group_replication_flow_control_applier_threshold   = 25000      #默认25000
 group_replication_flow_control_certifier_threshold = 25000      #默认25000
 group_replication_flow_control_mode                = QUOTA      #默认QUOTA
+auto_increment_increment                           = 3          #集群中有多少个节点就配置成几
 ```
