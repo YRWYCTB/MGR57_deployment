@@ -485,6 +485,7 @@ N为4-8，如果lastcommitted 相等即可并行回放
 [Warning] Plugin group_replication reported: 'Group Replication requires slave-preserve-commit-order to be set to ON when using more than 1 applier threads.'
 ## 7 MGR优化，针对大事务和从库延时进行优化
 ```sql
+plugin_load_add                ='group_replication.so'          #msyql启动加载组复制插件，否则如下参数无法识别
 group_replication_poll_spin_loops                  = 10000
 group_replication_transaction_size_limit           = 150000000  #最大可允许的事务大小143M，可以根据实际情况进行调整,事务超过该值将被回滚。
 group_replication_compression_threshold            = 1000000    #default 1M message compression 
