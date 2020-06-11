@@ -149,7 +149,7 @@ The instance 'dzst151:3317' is valid to be used in an InnoDB cluster.
     "status": "ok"
 }
 ```
-对所有拟加入集群节点进行my.cnf配置检查并更新。
+对所有拟加入集群节点进行my.cnf配置检查并更新,具体参数可参考该项目中my.cnf文件
 
 172.18.0.152:3317    dzst152
 
