@@ -19,6 +19,11 @@ grant all on *.* to tian with grant option;
 5.7中无法通过mysqlshell远程初始化my.cnf，需要在每个实例中均安装mysql-shell
 
 ## 一、实例的配置检查
+```sh
+mysqlsh --log-level=8 --dba-log-sql=2
+```
+使用上述命令启动mysqlshell后，会在mysqlsh执行文件所在目录生成一个文件，记录mysqlshell详细调用的命令。
+
 ```sql
 MySQL  172.18.0.151:3317 ssl  JS > \connect tian@172.18.0.151:3317
 输入密码：
