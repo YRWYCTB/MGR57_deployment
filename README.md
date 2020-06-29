@@ -61,6 +61,11 @@ Tables that do not follow these requirements will be readable but not updateable
 If your applications make updates (INSERT, UPDATE or DELETE) to these tables, 
 ensure they use the InnoDB storage engine and have a PRIMARY KEY or PRIMARY KEY Equivalent.
 
+报错如下
+mysql> update honeycomb_backend.sqllab_backend_20191205T205956 set id =1234 where id =123;
+
+ERROR 3098 (HY000): The table does not comply with the requirements by an external plugin.
+
 
 Checking instance configuration...
 
