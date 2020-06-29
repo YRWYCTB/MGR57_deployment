@@ -409,6 +409,23 @@ where variable_name="group_replication_primary_member";
 | dzst151      | 90d04d68-9bf7-11ea-a947-0242ac120097 |
 +--------------+--------------------------------------+
 1 row in set (0.01 sec)
+
+mysql> SELECT m.member_id, m.member_state, m.member_host, m.member_port,   
+IF(g.primary_uuid = '' OR m.member_id = g.primary_uuid,   'PRIMARY', 'SECONDARY') as member_role,    
+NULL as member_version, s.view_id FROM (SELECT IFNULL(variable_value, '') AS primary_uuid       
+FROM performance_schema.global_status       
+WHERE variable_name = 'group_replication_primary_member') g,      
+performance_schema.replication_group_members m LEFT JOIN performance_schema.replication_group_member_stats s   
+ON m.member_id = s.member_id     
+AND s.channel_name = 'group_replication_applier' ORDER BY m.member_id;
++--------------------------------------+--------------+-------------+-------------+-------------+----------------+---------------------+
+| member_id                            | member_state | member_host | member_port | member_role | member_version | view_id             |
++--------------------------------------+--------------+-------------+-------------+-------------+----------------+---------------------+
+| 70d5eff5-b220-11ea-87a4-0242ac120097 | ONLINE       | dzst151     |        3336 | SECONDARY   |           NULL | 15928274861597983:3 |
+| 74311bb7-b22b-11ea-8cad-0242ac120098 | ONLINE       | dzst152     |        3336 | SECONDARY   |           NULL | NULL                |
+| 7af46fc2-b210-11ea-b480-0242ac1200a0 | ONLINE       | dzst160     |        3336 | PRIMARY     |           NULL | NULL                |
++--------------------------------------+--------------+-------------+-------------+-------------+----------------+---------------------+
+3 rows in set (0.00 sec)
 ```
 ### 5.2查看成员状态
 ```sql
