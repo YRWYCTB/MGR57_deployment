@@ -39,6 +39,26 @@ Clients and other cluster members will communicate with it through this address 
 If this is not correct, the report_host MySQL system variable should be changed.
 
 Checking whether existing tables comply with Group Replication requirements...
+底层调用两个sql语句
+1、查询'mysql', 'sys', 'performance_schema', 'information_schema'系统库之外，没有使用Innodb及MEMORY引擎的表。
+SELECT table_schema, table_name, engine  FROM information_schema.tables  
+WHERE engine NOT IN ('InnoDB', 'MEMORY') 
+AND table_schema NOT IN ('mysql', 'sys', 'performance_schema', 'information_schema')
+2、查询'mysql', 'sys', 'performance_schema', 'information_schema'系统库之外不创建主键或唯一索引的表
+SELECT t.table_schema, t.table_name FROM information_schema.tables t     
+LEFT JOIN (SELECT table_schema, table_name                
+FROM information_schema.statistics                
+GROUP BY table_schema, table_name, index_name                
+HAVING SUM(CASE                    
+WHEN non_unique = 0 AND nullable != 'YES'                    
+THEN 1 ELSE 0 END) = COUNT(*)               
+) puks     
+ON t.table_schema = puks.table_schema         
+AND t.table_name = puks.table_name WHERE puks.table_name IS NULL    
+AND t.table_type = 'BASE TABLE'    
+AND t.table_schema NOT IN ('mysql', 'sys', 'performance_schema', 'information_schema');
+
+如果查询结果为空将出现如下提示。
 No incompatible tables detected
 
 #该部分将检测现存表是否与MGR兼容，如有不兼容会出现如下提示：对不包含主键或唯一索引的表会提示
@@ -61,13 +81,32 @@ Tables that do not follow these requirements will be readable but not updateable
 If your applications make updates (INSERT, UPDATE or DELETE) to these tables, 
 ensure they use the InnoDB storage engine and have a PRIMARY KEY or PRIMARY KEY Equivalent.
 
-报错如下
+在开启组复制的节点上对上述表中数据进行更改，则会出现如下报错，
 mysql> update honeycomb_backend.sqllab_backend_20191205T205956 set id =1234 where id =123;
 
 ERROR 3098 (HY000): The table does not comply with the requirements by an external plugin.
 
-
+检查数据库配置参数是否满足MGR；
 Checking instance configuration...
+底层在数据中执行如下语句
+show GLOBAL variables where `variable_name` in ('innodb_page_size')
+show GLOBAL variables where `variable_name` in ('performance_schema')
+show GLOBAL variables where `variable_name` in ('server_id')
+show GLOBAL variables where `variable_name` in ('log_bin')
+show GLOBAL variables where `variable_name` in ('port')
+show GLOBAL variables where `variable_name` in ('slave_parallel_workers')
+show GLOBAL variables where `variable_name` in ('binlog_format')
+show GLOBAL variables where `variable_name` in ('log_slave_updates')
+show GLOBAL variables where `variable_name` in ('enforce_gtid_consistency')
+show GLOBAL variables where `variable_name` in ('gtid_mode')
+show GLOBAL variables where `variable_name` in ('master_info_repository')
+show GLOBAL variables where `variable_name` in ('relay_log_info_repository')
+show GLOBAL variables where `variable_name` in ('binlog_checksum')
+show GLOBAL variables where `variable_name` in ('transaction_write_set_extraction')
+show GLOBAL variables where `variable_name` in ('report_port')
+show GLOBAL variables where `variable_name` in ('slave_parallel_type')
+show GLOBAL variables where `variable_name` in ('slave_preserve_commit_order')
+如果参数不满足将出现如下提示：
 
 NOTE: Some configuration options need to be fixed:
 +----------------------------------+---------------+----------------+------------------------------------------------+
