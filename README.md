@@ -35,16 +35,31 @@ MySQL  172.18.0.151:3317 ssl  JS > dba.checkInstanceConfiguration()
 Validating MySQL instance at dzst151:3317 for use in an InnoDB cluster...
 
 This instance reports its own address as dzst151:3317
-Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+Clients and other cluster members will communicate with it through this address by default. 
+If this is not correct, the report_host MySQL system variable should be changed.
 
 Checking whether existing tables comply with Group Replication requirements...
 No incompatible tables detected
 
 #该部分将检测现存表是否与MGR兼容，如有不兼容会出现如下提示：对不包含主键或唯一索引的表会提示
 WARNING: The following tables do not have a Primary Key or equivalent column: 
-frc.test233, fs_share.db_data, fs_share.group_data, fs_share.limit_data, fs_share.pay_ivr_log, fs_share.sip_presence, fs_share.sip_shared_appearance_dialogs, fs_share.sip_shared_appearance_subscriptions, fs_share.sip_subscriptions, fs_share.tiers, healthkg.tb_top_disease, honeycomb_backend.sqllab_backend_20191205T205956, honeycomb_backend.sqllab_backend_20191205T210133, honeycomb_product_library.tb_insurance_interface_test, honeycomb_trade.sqllab_honeycomb_trade_20191129T152230, honeycomb_trade.tb_people_target_info_201809_test, honeycomb_trade.tb_people_target_info_201810_test, nbmp.nbmp2_tb_ranking_list, nbmp.sqllab_nbmp_20191205T210412, nbmp.tb_call_out_task_bak, nbmp.tb_tsr_info_bak, pay_trade.pay_cardbin_info, sonar.groups_users, sonar.schema_migrations, superset.bart_lines, superset.birth_france_by_region, superset.birth_names, superset.energy_usage, superset.flights, superset.long_lat, superset.multiformat_time_series, superset.paris_iris_mapping, superset.random_time_series, superset.wb_health_population, supply_platform.ins_mall_clause_20160815, supply_platform.test, tomexam3_free.tm_admin_addition, tomexam3_free.tm_paper_link_branch, tomexam3_free.tm_system_function_lib, tomexam3_free.tm_user_addition
+frc.test233, fs_share.db_data, fs_share.group_data, fs_share.limit_data, fs_share.pay_ivr_log,
+fs_share.sip_presence, fs_share.sip_shared_appearance_dialogs, fs_share.sip_shared_appearance_subscriptions,
+fs_share.sip_subscriptions, fs_share.tiers, healthkg.tb_top_disease, 
+honeycomb_backend.sqllab_backend_20191205T205956, honeycomb_backend.sqllab_backend_20191205T210133, 
+honeycomb_product_library.tb_insurance_interface_test, honeycomb_trade.sqllab_honeycomb_trade_20191129T152230, 
+honeycomb_trade.tb_people_target_info_201809_test, honeycomb_trade.tb_people_target_info_201810_test, 
+nbmp.nbmp2_tb_ranking_list, nbmp.sqllab_nbmp_20191205T210412, nbmp.tb_call_out_task_bak, nbmp.tb_tsr_info_bak, 
+pay_trade.pay_cardbin_info, sonar.groups_users, sonar.schema_migrations, superset.bart_lines, 
+superset.birth_france_by_region, superset.birth_names, superset.energy_usage, superset.flights, 
+superset.long_lat, superset.multiformat_time_series, superset.paris_iris_mapping, 
+superset.random_time_series, superset.wb_health_population, supply_platform.ins_mall_clause_20160815, supply_platform.test, 
+tomexam3_free.tm_admin_addition, tomexam3_free.tm_paper_link_branch, tomexam3_free.tm_system_function_lib, tomexam3_free.tm_user_addition
 #对于不满足上述条件及不适用Innodb引擎的表，在启动组复制之后，这类表将变为只读表。
-Group Replication requires tables to use InnoDB and have a PRIMARY KEY or PRIMARY KEY Equivalent (non-null unique key). Tables that do not follow these requirements will be readable but not updateable when used with Group Replication. If your applications make updates (INSERT, UPDATE or DELETE) to these tables, ensure they use the InnoDB storage engine and have a PRIMARY KEY or PRIMARY KEY Equivalent.
+Group Replication requires tables to use InnoDB and have a PRIMARY KEY or PRIMARY KEY Equivalent (non-null unique key). 
+Tables that do not follow these requirements will be readable but not updateable when used with Group Replication. 
+If your applications make updates (INSERT, UPDATE or DELETE) to these tables, 
+ensure they use the InnoDB storage engine and have a PRIMARY KEY or PRIMARY KEY Equivalent.
 
 
 Checking instance configuration...
