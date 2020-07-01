@@ -164,6 +164,8 @@ NOTE: Please use the dba.configureInstance() command to repair these issues.
     ], 
     "status": "error"
 }
+# 对于MySQL8.0+版本的实例，执行如下命令即可在MySQL实例启动状态更改配置参数，
+# 但是对于5.7如果有参数配置不兼容，根据如下提示，手动更改my.cnf中参数后，重启MySQL。
  MySQL  172.18.0.151:3317 ssl  JS > dba.configureInstance()
 Configuring MySQL instance at dzst151:3317 for use in an InnoDB cluster...
 
