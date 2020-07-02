@@ -165,7 +165,7 @@ NOTE: Please use the dba.configureInstance() command to repair these issues.
     "status": "error"
 }
 # 对于MySQL8.0+版本的实例，执行如下命令即可在MySQL实例启动状态更改配置参数，
-# 但是对于5.7如果有参数配置不兼容，根据如下提示，手动更改my.cnf中参数后，重启MySQL。
+# 但是对于5.7如果有参数配置不兼容，根据如下提示，可以手动更改my.cnf中参数后，重启MySQL。
  MySQL  172.18.0.151:3317 ssl  JS > dba.configureInstance()
 Configuring MySQL instance at dzst151:3317 for use in an InnoDB cluster...
 
@@ -191,7 +191,7 @@ MySQL server configuration needs to be updated, but neither remote nor local con
 Please run this command locally, in the same host as the MySQL server being configured, and pass the path to its configuration file through the mycnfPath option.
 Dba.configureInstance: Unable to update configuration (RuntimeErro）
 ```
-5.7 不能使用mysqlshell远程更改MySQL实例配置，动态持久化配置，需要手动将上述配置更新到配置文件，并重启MySQL服务。或者在每个MySQL实例上安装MySQL进行配置
+5.7 不能使用mysqlshell远程更改MySQL实例配置，动态持久化配置，需要手动将上述配置更新到配置文件，并重启MySQL服务。
 ```sql
 binlog_checksum         =NONE
 enforce_gtid_consistency=ON
@@ -234,7 +234,7 @@ Configuring instance...
 The instance 'dzst140:3317' was configured to be used in an InnoDB cluster.
 NOTE: MySQL server needs to be restarted for configuration changes to take effect.
 ```
-配置完成，再次检查配置：    "status": "ok"表示配置无误。
+配置完成，重启MySQL实例，再次检查配置：    "status": "ok"表示配置无误。
 ```sql
 MySQL  172.18.0.151:3317 ssl  JS > dba.checkInstanceConfiguration()
 Validating MySQL instance at dzst151:3317 for use in an InnoDB cluster...
