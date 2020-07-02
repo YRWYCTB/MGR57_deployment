@@ -191,7 +191,7 @@ MySQL server configuration needs to be updated, but neither remote nor local con
 Please run this command locally, in the same host as the MySQL server being configured, and pass the path to its configuration file through the mycnfPath option.
 Dba.configureInstance: Unable to update configuration (RuntimeErro）
 ```
-5.7不能动态持久化配置，需要手动将上述配置更新到配置文件，并重启MySQL服务。
+5.7 不能使用mysqlshell远程更改MySQL实例配置，动态持久化配置，需要手动将上述配置更新到配置文件，并重启MySQL服务。或者在每个MySQL实例上安装MySQL进行配置
 ```sql
 binlog_checksum         =NONE
 enforce_gtid_consistency=ON
@@ -201,6 +201,38 @@ relay_log_info_repository= TABLE
 transaction_write_set_extraction = XXHASH64
 # Disable other storage engines
 disabled_storage_engines="MyISAM,BLACKHOLE,FEDERATED,ARCHIVE,MEMORY"
+```
+或者在每个MySQL实例上安装MySQL进行配置，需要指定对应实例配置文件位置，如果参数需要重启生效，会有相应提示
+```sql
+ MySQL  172.18.0.140:3317 ssl  JS > dba.configureInstance()
+Configuring local MySQL instance listening at port 3317 for use in an InnoDB cluster...
+
+This instance reports its own address as dzst140:3317
+Clients and other cluster members will communicate with it through this address by default. If this is not correct, the report_host MySQL system variable should be changed.
+
+NOTE: Some configuration options need to be fixed:
++-----------------------------+---------------+----------------+------------------------------------------------+
+| Variable                    | Current Value | Required Value | Note                                           |
++-----------------------------+---------------+----------------+------------------------------------------------+
+| binlog_checksum             | CRC32         | NONE           | Update the server variable and the config file |
+| enforce_gtid_consistency    | OFF           | ON             | Update the config file and restart the server  |
+| gtid_mode                   | OFF           | ON             | Update the config file and restart the server  |
+| master_info_repository      | FILE          | TABLE          | Update the config file and restart the server  |
+| relay_log_info_repository   | FILE          | TABLE          | Update the config file and restart the server  |
+| slave_preserve_commit_order | OFF           | ON             | Update the server variable and the config file |
++-----------------------------+---------------+----------------+------------------------------------------------+
+
+Some variables need to be changed, but cannot be done dynamically on the server: an option file is required.
+
+Detecting the configuration file...
+Found configuration file at standard location: /etc/my.cnf
+Do you want to modify this file? [y/N]: N
+Default file not found at the standard locations.
+Please specify the path to the MySQL configuration file: /data/mysql/mysql3317/my3317.cnf
+Do you want to perform the required configuration changes? [y/n]: y
+Configuring instance...
+The instance 'dzst140:3317' was configured to be used in an InnoDB cluster.
+NOTE: MySQL server needs to be restarted for configuration changes to take effect.
 ```
 配置完成，再次检查配置：    "status": "ok"表示配置无误。
 ```sql
