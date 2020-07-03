@@ -213,7 +213,56 @@ c.status()     查看集群状态
 }
 ```
 c.removeInstance() 删除集群中某个节点
+```
+ MySQL  172.18.0.160:3317 ssl  JS > var c = dba.getCluster()
+ MySQL  172.18.0.160:3317 ssl  JS > c.status()
+{
+    "clusterName": "mycluster", 
+    "defaultReplicaSet": {
+        "name": "default", 
+        "primary": "dzst160:3317", 
+        "ssl": "REQUIRED", 
+        "status": "OK", 
+        "statusText": "Cluster is ONLINE and can tolerate up to ONE failure.", 
+        "topology": {
+            "dzst151:3317": {
+                "address": "dzst151:3317", 
+                "mode": "R/O", 
+                "readReplicas": {}, 
+                "role": "HA", 
+                "status": "ONLINE"
+            }, 
+            "dzst152:3317": {
+                "address": "dzst152:3317", 
+                "mode": "R/O", 
+                "readReplicas": {}, 
+                "role": "HA", 
+                "status": "ONLINE"
+            }, 
+            "dzst160:3317": {
+                "address": "dzst160:3317", 
+                "mode": "R/W", 
+                "readReplicas": {}, 
+                "role": "HA", 
+                "status": "ONLINE"
+            }
+        }, 
+        "topologyMode": "Single-Primary"
+    }, 
+    "groupInformationSourceMember": "dzst160:3317"
+}
+ MySQL  172.18.0.160:3317 ssl  JS > c.removeInstance("dzst152:3317")
+The instance will be removed from the InnoDB cluster. Depending on the instance
+being the Seed or not, the Metadata session might become invalid. If so, please
+start a new session to the Metadata Storage R/W instance.
 
+Instance 'dzst152:3317' is attempting to leave the cluster...
+WARNING: On instance 'dzst152:3317' configuration cannot be persisted since MySQL version 5.7.30 does not support the SET PERSIST command (MySQL version >= 8.0.11 required). Please set the 'group_replication_start_on_boot' variable to 'OFF' in the server configuration file, otherwise it might rejoin the cluster upon restart.
+WARNING: Instance 'dzst151:3317' cannot persist configuration since MySQL version 5.7.30 does not support the SET PERSIST command (MySQL version >= 8.0.11 required). Please use the dba.configureLocalInstance() command locally to persist the changes.
+WARNING: Instance 'dzst160:3317' cannot persist configuration since MySQL version 5.7.30 does not support the SET PERSIST command (MySQL version >= 8.0.11 required). Please use the dba.configureLocalInstance() command locally to persist the changes.
+
+The instance 'dzst152:3317' was successfully removed from the cluster.
+```
 c.rejoinInstance() 节点意外下线，实例启动但是未能成功加入集群，执行该命令，将节点重新加入
 
 c.dissolve()       将集群解散
@@ -244,9 +293,16 @@ The cluster was successfully dissolved.
 Replication was disabled but user data was left intact.
 ```
 
-c.setPrimaryInstance() 将某个节点提升为主节点，前提该节点为从节点。
-
+c.setPrimaryInstance() 将某个节点提升为主节点，前提该节点为从节点,该命令不支持5.7版本
+```
+ MySQL  dzst160:3317 ssl  JS > c.setPrimaryInstance("dzst151:3317")
+Cluster.setPrimaryInstance: Operation not supported on target server version: '5.7.30' (RuntimeError)
+```
 c.getName()        获取当前集群名称
+```
+ MySQL  dzst160:3317 ssl  JS > c.getName()
+mycluster
+```
 
 
 
