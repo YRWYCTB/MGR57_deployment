@@ -67,7 +67,21 @@ Configuring instance...
 The instance 'dzst140:3317' was configured to be used in an InnoDB cluster.
 NOTE: MySQL server needs to be restarted for configuration changes to take effect.
 ```
-dba.configureLocalInstance()            功能同上
+dba.configureLocalInstance()            功能同上，将本实例配置持久化配置文件中，一般是再集群增减节点后执行
+```
+ MySQL  172.18.0.160:3317 ssl  JS > dba.configureLocalInstance()
+The instance 'dzst160:3317' belongs to an InnoDB cluster.
+
+Detecting the configuration file...
+Found configuration file at standard location: /etc/my.cnf
+Do you want to modify this file? [y/N]: N
+Default file not found at the standard locations.
+Please specify the path to the MySQL configuration file: /data/mysql/mysql3317/my3317.cnf
+Persisting the cluster settings...
+The instance 'dzst160:3317' was configured for use in an InnoDB cluster.
+
+The instance cluster settings were successfully persisted.
+```
 
 dba.dropMetadataSchema()                删除节点中metadata数据
 ```
