@@ -67,7 +67,7 @@ Configuring instance...
 The instance 'dzst140:3317' was configured to be used in an InnoDB cluster.
 NOTE: MySQL server needs to be restarted for configuration changes to take effect.
 ```
-dba.configureLocalInstance()            功能同上，将本实例配置持久化配置文件中，一般是再集群增减节点后执行
+dba.configureLocalInstance()            功能同上，将本实例配置持久化配置文件中，一般是集群中增、减节点后执行(5.7中)。
 ```
  MySQL  172.18.0.160:3317 ssl  JS > dba.configureLocalInstance()
 The instance 'dzst160:3317' belongs to an InnoDB cluster.
@@ -98,7 +98,7 @@ Do you want to disable super_read_only and continue? [y/N]: y
 
 Metadata Schema successfully removed.
 ```
-dba.createCluster()                     创建innodb cluster 
+dba.createCluster()                     创建innodb cluster,输入参数为集群名称， 
 ```
 var cluster=dba.createCluster("mycluster57")
 A new InnoDB cluster will be created on instance '172.18.0.151:3317'.
@@ -212,7 +212,7 @@ c.status()     查看集群状态
     "groupInformationSourceMember": "dzst151:3317"
 }
 ```
-c.removeInstance() 删除集群中某个节点
+c.removeInstance() 删除集群中某个节点，数据参数为节点IP：端口
 ```
  MySQL  172.18.0.160:3317 ssl  JS > var c = dba.getCluster()
  MySQL  172.18.0.160:3317 ssl  JS > c.status()
@@ -298,9 +298,9 @@ c.setPrimaryInstance() 将某个节点提升为主节点，前提该节点为从
  MySQL  dzst160:3317 ssl  JS > c.setPrimaryInstance("dzst151:3317")
 Cluster.setPrimaryInstance: Operation not supported on target server version: '5.7.30' (RuntimeError)
 ```
-c.getName()        获取当前集群名称
+c.getName()        获取当前集群名称，为createCluseter时输入的集群名称
 ```
- MySQL  dzst160:3317 ssl  JS > c.getName()
+MySQL  dzst160:3317 ssl  JS > c.getName()
 mycluster
 ```
 
