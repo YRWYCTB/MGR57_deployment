@@ -105,15 +105,17 @@ Threads started!
 >show slave status\G
 Retrieved_Gtid_Set: e19ada5a-a580-11ea-89f9-0242ac1200a0:1-2278
 Executed_Gtid_Set: e19ada5a-a580-11ea-89f9-0242ac1200a0:1-2273
-```sql
+```
 此时在从库执行show slave status 将出现新的gtid
+
 ```sql
 >show slave status\G
 Retrieved_Gtid_Set: 70352c00-bf3e-11ea-a766-0242ac1200a0:1-7096,e19ada5a-a580-11ea-89f9-0242ac1200a0:1-9667
 Executed_Gtid_Set: 70352c00-bf3e-11ea-a766-0242ac1200a0:1-7096,e19ada5a-a580-11ea-89f9-0242ac1200a0:1-966
-```sql			
+```
+其中70352c00-bf3e-11ea-a766-0242ac1200a0为group_replication_group_name,70352c00-bf3e-11ea-a766-0242ac1200a0:1-7096为组复制的GTID
+### 4.2 执行命令将从库添加到集群中；如果不停止主从复制将会出现如下报错，并提示需要执行'STOP SLAVE;'命令
 
-### 4.2 执行命令将从库添加到集群中；如果不停止主从复制将会出现如下报错
 ```sql
  MySQL  172.18.0.160:3317 ssl  JS > c.addInstance("tian@172.18.0.151:3317")
 The safest and most convenient way to provision a new instance is through automatic clone provisioning, which will completely overwrite the state of 'dzst151:3317' with a physical snapshot from an existing cluster member. To use this method by default, set the 'recoveryMethod' option to 'clone'.
@@ -262,6 +264,11 @@ The instance '172.18.0.152:3317' was successfully added to the cluster.
         "topologyMode": "Single-Primary"
     }, 
     "groupInformationSourceMember": "dzst160:3317"
+```
+## 7、持久化配置参数
+### 7.1 各个节点mysqlshell中执行如下命令，将配置持久化
+```
+dba.configureLocalInstance()
 ```
 
 
