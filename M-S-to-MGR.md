@@ -268,7 +268,24 @@ The instance '172.18.0.152:3317' was successfully added to the cluster.
 ## 7、持久化配置参数
 ### 7.1 各个节点mysqlshell中执行如下命令，将配置持久化
 ```
-dba.configureLocalInstance()
+ MySQL  JS > \connect tian@172.18.0.160:3317
+Creating a session to 'tian@172.18.0.160:3317'
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 980345
+Server version: 5.7.30-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+ MySQL  172.18.0.160:3317 ssl  JS > dba.configureLocalInstance()
+The instance 'dzst160:3317' belongs to an InnoDB cluster.
+
+Detecting the configuration file...
+Found configuration file at standard location: /etc/my.cnf
+Do you want to modify this file? [y/N]: N
+Default file not found at the standard locations.
+Please specify the path to the MySQL configuration file: /data/mysql/mysql3317/my3317.cnf
+Persisting the cluster settings...
+The instance 'dzst160:3317' was configured for use in an InnoDB cluster.
+
+The instance cluster settings were successfully persisted.
 ```
 
 
