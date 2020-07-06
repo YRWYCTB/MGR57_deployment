@@ -1,4 +1,4 @@
-#将主从复制升级为MGR
+# 将主从复制升级为MGR
 ## 0、资源情况
 
 MySQL版本5.7.30
@@ -187,7 +187,7 @@ The instance '172.18.0.151:3317' was successfully added to the cluster.
 ```sql
 > stop slave;
 ```
-### 6.2 添加节点
+### 6.2 添加节点,在添加节点过程中，不会出现主库不可写入的情况。
 ```sql
 MySQL  172.18.0.160:3317 ssl  JS > c.addInstance("tian@172.18.0.152:3317")
 The safest and most convenient way to provision a new instance is through automatic clone provisioning, which will completely overwrite the state of 'dzst152:3317' with a physical snapshot from an existing cluster member. To use this method by default, set the 'recoveryMethod' option to 'clone'.
@@ -219,7 +219,7 @@ NOTE: 'dzst152:3317' is being recovered from 'dzst160:3317'
 WARNING: Instance 'dzst160:3317' cannot persist configuration since MySQL version 5.7.30 does not support the SET PERSIST command (MySQL version >= 8.0.11 required). Please use the dba.configureLocalInstance() command locally to persist the changes.
 WARNING: Instance 'dzst151:3317' cannot persist configuration since MySQL version 5.7.30 does not support the SET PERSIST command (MySQL version >= 8.0.11 required). Please use the dba.configureLocalInstance() command locally to persist the changes.
 The instance '172.18.0.152:3317' was successfully added to the cluster.
-``
+```
 ### 6.3 查看状态,此时集群处于可以允许一个节点下线的状态
 ```sql
  MySQL  172.18.0.160:3317 ssl  JS > c.status()
@@ -257,7 +257,6 @@ The instance '172.18.0.152:3317' was successfully added to the cluster.
         "topologyMode": "Single-Primary"
     }, 
     "groupInformationSourceMember": "dzst160:3317"
-	
 ```
 
 
