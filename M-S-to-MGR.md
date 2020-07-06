@@ -287,5 +287,76 @@ The instance 'dzst160:3317' was configured for use in an InnoDB cluster.
 
 The instance cluster settings were successfully persisted.
 ```
+## 8、清理原主从复制信息
+### 8.1 在从节点执行如下命令
+```
+mysql> show slave status\G
+*************************** 1. row ***************************
+               Slave_IO_State: 
+                  Master_Host: 172.18.0.160
+                  Master_User: tian
+                  Master_Port: 3317
+                Connect_Retry: 60
+              Master_Log_File: mysql-bin.000001
+          Read_Master_Log_Pos: 38346894
+               Relay_Log_File: relay-bin.000002
+                Relay_Log_Pos: 38347099
+        Relay_Master_Log_File: mysql-bin.000001
+             Slave_IO_Running: No
+            Slave_SQL_Running: No
+              Replicate_Do_DB: 
+          Replicate_Ignore_DB: 
+           Replicate_Do_Table: 
+       Replicate_Ignore_Table: 
+      Replicate_Wild_Do_Table: 
+  Replicate_Wild_Ignore_Table: 
+                   Last_Errno: 0
+                   Last_Error: 
+                 Skip_Counter: 0
+          Exec_Master_Log_Pos: 38346894
+              Relay_Log_Space: 38347292
+              Until_Condition: None
+               Until_Log_File: 
+                Until_Log_Pos: 0
+           Master_SSL_Allowed: No
+           Master_SSL_CA_File: 
+           Master_SSL_CA_Path: 
+              Master_SSL_Cert: 
+            Master_SSL_Cipher: 
+               Master_SSL_Key: 
+        Seconds_Behind_Master: NULL
+Master_SSL_Verify_Server_Cert: No
+                Last_IO_Errno: 0
+                Last_IO_Error: 
+               Last_SQL_Errno: 0
+               Last_SQL_Error: 
+  Replicate_Ignore_Server_Ids: 
+             Master_Server_Id: 1603317
+                  Master_UUID: e19ada5a-a580-11ea-89f9-0242ac1200a0
+             Master_Info_File: mysql.slave_master_info
+                    SQL_Delay: 0
+          SQL_Remaining_Delay: NULL
+      Slave_SQL_Running_State: 
+           Master_Retry_Count: 86400
+                  Master_Bind: 
+      Last_IO_Error_Timestamp: 
+     Last_SQL_Error_Timestamp: 
+               Master_SSL_Crl: 
+           Master_SSL_Crlpath: 
+           Retrieved_Gtid_Set: 70352c00-bf3e-11ea-a766-0242ac1200a0:1-13604,
+e19ada5a-a580-11ea-89f9-0242ac1200a0:1-9667
+            Executed_Gtid_Set: 70352c00-bf3e-11ea-a766-0242ac1200a0:1-37885,
+e19ada5a-a580-11ea-89f9-0242ac1200a0:1-9667
+                Auto_Position: 1
+         Replicate_Rewrite_DB: 
+                 Channel_Name: 
+           Master_TLS_Version: 
+1 row in set (0.00 sec)
 
+mysql> reset slave all;
+ERROR 3139 (HY000): RESET SLAVE ALL FOR CHANNEL cannot be performed on channel 'group_replication_applier'.
+mysql> show slave status\G
+Empty set (0.01 sec)
+```
+原主从复制信息将会清空
 
